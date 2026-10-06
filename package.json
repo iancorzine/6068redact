@@ -1,0 +1,30 @@
+{
+  "name": "6068redact",
+  "version": "1.0.0",
+  "description": "Browser-only PII redaction for large PDFs (Cal. Bus. & Prof. Code 6068.1)",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/write-vercel.mjs && vite build && node scripts/check-bundle.mjs",
+    "preview": "vite preview --port 4173 --strictPort",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "fixtures": "tsx tests/fixtures/write-samples.ts",
+    "perf": "tsx tests/perf/perf-node.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "mupdf": "1.28.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4",
+    "pdfjs-dist": "^6.4.299",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.3",
+    "vitest": "^5.0.3"
+  },
+  "private": true,
+  "type": "module"
+}

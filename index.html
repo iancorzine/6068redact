@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>6068redact</title>
+    <link rel="stylesheet" href="/src/ui/styles.css" />
+    <script type="module" src="/src/ui/main.ts"></script>
+  </head>
+  <body>
+    <header class="top">
+      <h1>6068redact</h1>
+      <p class="tag">Removes personal identifying information from PDFs before they go to an AI system. Supports Cal. Bus. &amp; Prof. Code § 6068.1.</p>
+      <p class="privacy" id="engine-status" role="status">Loading redaction engine…</p>
+    </header>
+
+    <main>
+      <form id="form" novalidate>
+        <section class="card">
+          <h2>1. PDF</h2>
+          <div class="notice" role="note">
+            <strong>Before uploading:</strong> Run Adobe Acrobat 'Recognize Text' with the 'Searchable Image' setting before uploading.
+          </div>
+          <label class="drop" id="drop">
+            <input type="file" id="file" accept="application/pdf,.pdf" required />
+            <span id="file-label">Choose a PDF or drop it here</span>
+          </label>
+        </section>
+
+        <section class="card">
+          <h2>2. Protected person</h2>
+          <div class="grid">
+            <label>Full name <span class="req">required</span>
+              <input type="text" id="fullName" autocomplete="off" required placeholder="Jane Q. Smith" />
+            </label>
+            <label>Initials <span class="hint">shown in the name boxes</span>
+              <input type="text" id="initials" autocomplete="off" maxlength="6" placeholder="JS" />
+            </label>
+          </div>
+          <label>Name variants <span class="req">required</span> <span class="hint">one per line: nicknames, maiden names, misspellings</span>
+            <textarea id="variants" rows="3" required placeholder="Janie Smith&#10;Jane Doe&#10;Jane Smyth"></textarea>
+          </label>
+          <div class="grid">
+            <label>Date of birth <span class="hint">optional, e.g. 03/14/1979</span>
+              <input type="text" id="dob" autocomplete="off" placeholder="MM/DD/YYYY" />
+            </label>
+            <label>Phone number(s) <span class="hint">optional, one per line</span>
+              <textarea id="phones" rows="2" placeholder="(559) 555-0143"></textarea>
+            </label>
+          </div>
+          <label>Address(es) <span class="hint">optional, one per line</span>
+            <textarea id="addresses" rows="2" placeholder="123 Main Street, Apt 4, Fresno, CA 93722"></textarea>
+          </label>
+        </section>
+
+        <section class="card">
+          <h2>3. Anything else to redact <span class="hint">optional — black boxes, no initials</span></h2>
+          <label>Other names <span class="hint">one per line</span>
+            <textarea id="otherNames" rows="2"></textarea>
+          </label>
+          <div class="grid">
+            <label>Other addresses <span class="hint">one per line</span>
+              <textarea id="otherAddresses" rows="2"></textarea>
+            </label>
+            <label>Other phone numbers <span class="hint">one per line</span>
+              <textarea id="otherPhones" rows="2"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <p class="errors" id="errors" role="alert" hidden></p>
+        <div class="actions">
+          <button type="submit" id="run" disabled>Redact</button>
+          <button type="button" id="cancel" class="secondary" hidden>Cancel</button>
+        </div>
+      </form>
+
+      <section class="card" id="progress-card" hidden aria-live="polite">
+        <h2>Processing</h2>
+        <progress id="progress" max="100" value="0"></progress>
+        <p id="progress-text">Starting…</p>
+      </section>
+
+      <section class="card result" id="blocked" hidden>
+        <h2>Stopped: pages without a text layer</h2>
+        <p>These pages have no recognized text, so they cannot be checked for personal information. No output was produced.</p>
+        <p class="pages" id="blocked-pages"></p>
+        <p>Run Acrobat 'Recognize Text' with the 'Searchable Image' setting on the whole file, then upload it again.</p>
+      </section>
+
+      <section class="card result" id="done" hidden>
+        <h2>Done</h2>
+        <div class="downloads">
+          <a id="dl-redacted" class="button" download>Download redacted PDF</a>
+          <a id="dl-report" class="button secondary" download>Download exceptions report</a>
+        </div>
+        <p class="hint" id="dl-hint" hidden>If no download started, this window may not support downloads (for example, an app's built-in preview pane). Open this page in Chrome, Edge or Safari and run it again.</p>
+        <table id="summary"></table>
+      </section>
+
+      <section class="card result" id="failed" hidden>
+        <h2>Something went wrong</h2>
+        <p id="failed-text"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Everything runs in this browser tab. Your file is never uploaded, and the app makes no network requests after it loads. You can disconnect from the network before choosing a file.</p>
+      <p>While you download it, the redacted output is kept in this browser's private storage on this computer. It is deleted when you start another run or reopen the app.</p>
+      <p>Built with MuPDF.js (AGPL-3.0, Artifex Software) and Arimo (SIL OFL 1.1). Source code (AGPL-3.0): <a href="https://github.com/iancorzine/6068redact" rel="noopener noreferrer">github.com/iancorzine/6068redact</a></p>
+    </footer>
+  </body>
+</html>
