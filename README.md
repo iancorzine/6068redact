@@ -123,7 +123,7 @@ vercel.json                  generated from security-headers.mjs by the build
 
 ### Deploying to Vercel
 
-Import the repository in Vercel. `vercel.json` sets the build command (`npm run build`), the output directory (`dist`), and the security headers (CSP with `connect-src 'none'` and `frame-ancestors 'none'`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, and others). No environment variables or serverless functions are used. Turn off Vercel Web Analytics and Speed Insights for the project. They are off by default, and the CSP would block them anyway.
+Live at https://6068redact.vercel.app. The Vercel project is connected to this GitHub repository: every push to `main` builds and deploys automatically. To set it up elsewhere, import the repository in Vercel. `vercel.json` sets the build command (`npm run build`), the output directory (`dist`), and the security headers (CSP with `connect-src 'none'` and `frame-ancestors 'none'`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, and others). No environment variables or serverless functions are used. Turn off Vercel Web Analytics and Speed Insights for the project. They are off by default, and the CSP would block them anyway.
 
 ### Maintenance notes
 
